@@ -44,7 +44,7 @@ def testLdapadmin(loginVar, userName='nadie'):
 	if userName!='nadie' and not int(str(os.system("ldapadmin -s -F sn="+username+" | grep 'sn:'"))):
 		return None
 	else:
-		if int(str(os.system("ldapadmin -s -F cn="+loginVar+" | grep 'cn:'"))):
+		if not int(str(os.system("ldapadmin -s -F cn="+loginVar+" | grep 'cn:'"))):
 			return 1
 		else:
 			return 0
