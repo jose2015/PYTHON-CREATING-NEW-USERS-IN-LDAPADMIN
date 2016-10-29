@@ -2,7 +2,7 @@
 import string as st
 import sys
 import os
-
+import random as r
 
 def f_file_write(fileName, stringVar):
 	""" This is  a method to open in write mode a single file and it write 
@@ -20,16 +20,18 @@ def f_file_read(fileName='micro1ro.txt'):
 
 def testLdapadmin(nameVar, testVar='exist login?'):	
 	if testVar=='exist user?':
-		if not int(str(os.system("ldapadmin -s -F sn="+nameVar+" | grep 'sn:'"))):
-			return 1
-		else:
-			return 0
+		return r.randint(0,1)
+		# if not int(str(os.system("ldapadmin -s -F sn="+nameVar+" | grep 'sn:'"))):
+		# 	return 1
+		# else:
+		# 	return 0
 
 	if testVar=='exist login?':
-		if int(str(os.system("ldapadmin -s -F cn="+nameVar+" | grep 'cn:'"))):
-			return 1
-		else:
-			return 0
+		return r.randint(0,1)
+		# if int(str(os.system("ldapadmin -s -F cn="+nameVar+" | grep 'cn:'"))):
+		# 	return 1
+		# else:
+		# 	return 0
 
 def functFixExistentLogin(loginVar):	
 	proveResult=testLdapadmin(loginVar)
@@ -85,15 +87,18 @@ def main():
 	print functLoginNameUsers(listNameStudSplitted,'dict')
 	# print functLoginNameUsers(listNameStudSplitted,'dict').keys()
 	
-	f_file_write('salidaLoginPython.txt', st.join(functLoginNameUsers(listNameStudSplitted,'dict').keys(),sep='\n' ))
+	f_file_write('salidaLoginPython.txt', st.join(functLoginNameUsers(listNameStudSplitted,'dict').values(),sep='\n' ))
 
 	# fileResult=open('salidaLoginPython.txt','w')
 	# for login in listTemp:
 	# 	fileResult.write(login)
 	# fileResult.close()
 
-if __name__ == '__main__':
-	main()
+
+main()
+# if __name__ == '__main__':
+# 	main()
+
 
 # print listLoginName[33]
  # (int(str(os.system("ldapadmin -s -F cn="+userName+"| grep 'cn:'"))) or 

@@ -25,7 +25,7 @@ def testLdapadmin(nameVar, testVar='exist login?'):
 		else:
 			return 0
 
-	if testVar=='exist login?';
+	if testVar=='exist login?':
 		if int(str(os.system("ldapadmin -s -F cn="+nameVar+" | grep 'cn:'"))):
 			return 1
 		else:
@@ -80,34 +80,17 @@ def main():
 	listRepeatedUsers=[ student for student in listNameStud if testLdapadmin(student, 'user exist?')]
 	listRealNewUsers=[ student for student in listNameStud if not testLdapadmin(student, 'user exist?')]
 	
-	listNameStudSplitted=[st.split(studentName,sep=' ') for student in listRealNewUsers]
+	listNameStudSplitted=[st.split(student, sep=' ') for student in listRealNewUsers]
 
 	print functLoginNameUsers(listNameStudSplitted,'dict')
 	# print functLoginNameUsers(listNameStudSplitted,'dict').keys()
 	
-	f_file_write('salidaLoginPython.txt', st.join(functLoginNameUsers(listNameStudSplitted,'dict').keys()),sep='\n' )
+	f_file_write('salidaLoginPython.txt', st.join(functLoginNameUsers(listNameStudSplitted,'dict').keys(),sep='\n' ))
 
-	# fileResult=open('salidaLoginPython.txt','w')
-	# for login in listTemp:
-	# 	fileResult.write(login)
-	# fileResult.close()
 
 if __name__ == '__main__':
 	main()
 
-# print listLoginName[33]
- # (int(str(os.system("ldapadmin -s -F cn="+userName+"| grep 'cn:'"))) or 
-# for i in range(len(listLoginName)): 
-# 	if listLoginName[i]=="mde":
-# 		print str(i+1)+ listLoginName[i]
-# listLoginName=map(lambda x: st.lower(x[0][0]+x[-2]),listNameStudSplitted)
-
-# [["",",","",""],["","",""],["","",""]]
-
-# listNameLastName=map(lambda student: map(lambda x:[x[0]]+[x[-2]],student),listNameSecNameSplited)
-# """ ldapadmin -s -F cn=jfuentes | grep 'cn:'"""
-
-# def fRead(fileName):fileTemp=open(fileName,"r");text=fileTemp.read();fileTemp.close();return text
 
 
 # ----------------------------------------------------------------------------------
