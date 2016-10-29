@@ -4,12 +4,11 @@ import sys
 import os
 import random as r
 
-
-def f_file_write(fileName, string):
+def f_file_write(fileName, stringVar):
 	""" This is  a method to open in write mode a single file and it write 
 	the content on the string. """
 	fileTemp =open(fileName,'w')
-	text=fileTemp.write(string); fileTemp.close()
+	text=fileTemp.write(stringVar); fileTemp.close()
 
 def f_file_read(fileName='micro1ro.txt'):
 	""" This is  a method to open in read mode a single file and return the 
@@ -17,6 +16,39 @@ def f_file_read(fileName='micro1ro.txt'):
 	fileTemp =open(fileName,"r")
 	text=fileTemp.read(); fileTemp.close()
 	return text
+
+
+def testLdapadmin(nameVar, testVar='exist login?'):	
+	if testVar=='exist user?':
+		return r.randint(0,1)
+		# if not int(str(os.system("ldapadmin -s -F sn="+nameVar+" | grep 'sn:'"))):
+		# 	return 1
+		# else:
+		# 	return 0
+
+	if testVar=='exist login?':
+		return r.randint(0,1)
+		# if int(str(os.system("ldapadmin -s -F cn="+nameVar+" | grep 'cn:'"))):
+		# 	return 1
+		# else:
+		# 	return 0
+
+def functFixExistentLogin(loginVar):	
+	proveResult=testLdapadmin(loginVar)
+	loginVarFixed=loginVar
+
+	if proveResult:
+		while testLdapadmin(loginVarFixed):
+			if not loginVarFixed[-1] in st.digits:
+				loginVarFixed=loginVarFixed+'1'
+			else:
+				loginVarFixed=loginVarFixed[0:-1]+str(int(loginVarFixed[-1])+1)
+	else:
+		loginVarFixed=loginVar
+
+	return loginVarFixed
+
+
 
 def functionName2Login(listNameSepVar):
 	if len(listNameSepVar[-2])>2:
@@ -28,52 +60,48 @@ def functionName2Login(listNameSepVar):
 				login=st.lower(listNameSepVar[0][0]+listNameSepVar[-4])
 	return login
 
-def functionLoginNameUsers( listNameVar ):
-	listLoginName=map(lambda student: functionName2Login(student),listNameVar)
-	print listLoginName
-	return listLoginName
 
+def functLoginNameUsers( listNameVar, varReturn='list' ):
 
-def proveExistenceLogin(loginVar):
-	loginVarFixed=loginVar
-	# proveResult=os.system('/root/codigos/chequeaUname.sh '+loginVar)
-	proveResult=r.randint(0,1)
-	if proveResult:
-		# while os.system('/root/codigos/chequeaUname.sh '+loginVarFixed):
-		while r.randint(0,1):
-			if not loginVarFixed[-1] in st.digits:
-				loginVarFixed=loginVarFixed+'1'
-				# return loginVarFixed
-			else:
-				loginVarFixed=loginVarFixed[0:-1]+str(int(loginVarFixed[-1])+1)
-				# return loginVarFixed
-	else:
-		loginVarFixed=loginVar
-		# return loginVarFixed
-	return loginVarFixed
+	if varReturn=='list':
+		listLoginName=map(lambda student: functFixExistentLogin(functionName2Login(student)), listNameVar)
+		# print listLoginName
+		return listLoginName
+
+	if varReturn=='dict':
+		dictioLoginName=dict((st.join(name,sep=' '), functFixExistentLogin(functionName2Login(name))) for name in listNameVar)
+		# print dictioLoginName
+		return dictioLoginName
+
 
 def main():
 
 	fileContent=f_file_read()
 	listNameStud=st.split(fileContent, sep='\n')
-	listNameStudSplitted=[st.split(student,sep=' ') for student in listNameStud]
+	
+	listRepeatedUsers=[ student for student in listNameStud if testLdapadmin(student, 'user exist?')]
+	listRealNewUsers=[ student for student in listNameStud if not testLdapadmin(student, 'user exist?')]
+	
+	listNameStudSplitted=[st.split(student,sep=' ') for student in listRealNewUsers]
 
-	# print functionLoginNameUsers(listNameStudSplitted)
+	print functLoginNameUsers(listNameStudSplitted,'dict')
+	# print functLoginNameUsers(listNameStudSplitted,'dict').keys()
+	
+	f_file_write('salidaLoginPython.txt', st.join(functLoginNameUsers(listNameStudSplitted,'dict').values(),sep='\n' ))
 
-	listTemp=[]
-	for login in functionLoginNameUsers(listNameStudSplitted):
-		listTemp+=[proveExistenceLogin(login)]
-	print listTemp 
+	# fileResult=open('salidaLoginPython.txt','w')
+	# for login in listTemp:
+	# 	fileResult.write(login)
+	# fileResult.close()
 
-	fileResult=open('salidaLoginPython.txt','w')
-	for login in listTemp:
-		fileResult.write(login+'\n')
-	fileResult.close()
 
-if __name__ == '__main__':
-	main()
+main()
+# if __name__ == '__main__':
+# 	main()
+
 
 # print listLoginName[33]
+ # (int(str(os.system("ldapadmin -s -F cn="+userName+"| grep 'cn:'"))) or 
 # for i in range(len(listLoginName)): 
 # 	if listLoginName[i]=="mde":
 # 		print str(i+1)+ listLoginName[i]
@@ -82,9 +110,9 @@ if __name__ == '__main__':
 # [["",",","",""],["","",""],["","",""]]
 
 # listNameLastName=map(lambda student: map(lambda x:[x[0]]+[x[-2]],student),listNameSecNameSplited)
+# """ ldapadmin -s -F cn=jfuentes | grep 'cn:'"""
 
-
-
+# def fRead(fileName):fileTemp=open(fileName,"r");text=fileTemp.read();fileTemp.close();return text
 
 
 # ----------------------------------------------------------------------------------
@@ -117,6 +145,7 @@ if __name__ == '__main__':
 #  59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             
 # 
 # -----------------------------------------------------------------------------------
+
 
 
 
