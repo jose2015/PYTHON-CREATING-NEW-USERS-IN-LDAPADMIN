@@ -100,21 +100,6 @@ main()
 # 	main()
 
 
-# print listLoginName[33]
- # (int(str(os.system("ldapadmin -s -F cn="+userName+"| grep 'cn:'"))) or 
-# for i in range(len(listLoginName)): 
-# 	if listLoginName[i]=="mde":
-# 		print str(i+1)+ listLoginName[i]
-# listLoginName=map(lambda x: st.lower(x[0][0]+x[-2]),listNameStudSplitted)
-
-# [["",",","",""],["","",""],["","",""]]
-
-# listNameLastName=map(lambda student: map(lambda x:[x[0]]+[x[-2]],student),listNameSecNameSplited)
-# """ ldapadmin -s -F cn=jfuentes | grep 'cn:'"""
-
-# def fRead(fileName):fileTemp=open(fileName,"r");text=fileTemp.read();fileTemp.close();return text
-
-
 # ----------------------------------------------------------------------------------
 # Name: creaUsersEmail.py
 # Author: Jose Manuel Alonso
